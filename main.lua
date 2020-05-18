@@ -5,9 +5,9 @@ local emulated = {}
 setreadonly(mt, false)
 
 local meta_hooks = {
-    __index = function(self, prop)
-        local A = emulated[self]
-        local B = A and A[prop]
+    ['__index'] = function(self, prop)
+        local A = emulated[self] or nil
+        local B = A and A[prop] or nil
 
         if A and B then
             return B[1]
@@ -15,22 +15,14 @@ local meta_hooks = {
 
         return index(self, prop)
     end,
-    __newindex = function(self, prop, value)
-        local A = emulated[self]
-        local B = A and A[prop]
-        local virtual_instance
-
-        local success = pcall(function()
-            virtual_instance = Instance.new(self.ClassName)
-        end)
-
-        if success then
-            pcall(newindex, virtual_instance, prop, value)
-        end
+    ['__newindex'] = function(self, prop, value)
+        local A = emulated[self] or nil
+        local B = A and A[prop] or nil
 
         if A and B then
-            if checkcaller() then
-                B[1] = virtual_instance and virtual_instance[prop] or value
+            local caller = checkcaller()
+            if not caller then
+                B[1] = value
             else
                 B[2] = value
             end
@@ -38,10 +30,6 @@ local meta_hooks = {
             value = B[2]
         end
 
-        if virtual_instance then
-            virtual_instance:Destroy()
-        end
-        
         return newindex(self, prop, value)
     end
 }
