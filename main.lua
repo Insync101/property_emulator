@@ -58,6 +58,3 @@ local function emulate_property(self, prop)
         emulate_property(self, prop)
     end 
 end
-
-emulate_property(Humanoid, 'WalkSpeed') -- // Emulating the property Humanoid.WalkSpeed.
-Humanoid.WalkSpeed = 50 -- // Setting the walkspeed of the humanoid to 50, but client returns what it sets it to.
