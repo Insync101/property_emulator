@@ -29,8 +29,7 @@ local meta_hooks = {
         end
 
         if A and B then
-            local caller = checkcaller()
-            if not caller then
+            if checkcaller() then
                 B[1] = virtual_instance and virtual_instance[prop] or value
             else
                 B[2] = value
@@ -59,3 +58,6 @@ local function emulate_property(self, prop)
         emulate_property(self, prop)
     end 
 end
+
+emulate_property(Humanoid, 'WalkSpeed') -- // Emulating the property Humanoid.WalkSpeed.
+Humanoid.WalkSpeed = 50 -- // Setting the walkspeed of the humanoid to 50, but client returns what it sets it to.
