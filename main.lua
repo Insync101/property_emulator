@@ -46,3 +46,5 @@ local function emulate_property(self, prop)
         emulate_property(self, prop)
     end 
 end
+
+return emulate_property
