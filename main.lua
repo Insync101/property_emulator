@@ -9,7 +9,7 @@ local meta_hooks = {
         local A = emulated[self]
         local B = A and A[prop]
 
-        if A and B then
+        if B then
             return B[1]
         end
 
@@ -19,7 +19,7 @@ local meta_hooks = {
         local A = emulated[self]
         local B = A and A[prop]
 
-        if A and B then
+        if B then
             B[checkcaller() and 2 or 1] = value
             value = B[2]
         end
