@@ -6,8 +6,8 @@ setreadonly(mt, false)
 
 local meta_hooks = {
     ['__index'] = function(self, prop)
-        local A = emulated[self] or nil
-        local B = A and A[prop] or nil
+        local A = emulated[self]
+        local B = A and A[prop]
 
         if A and B then
             return B[1]
@@ -16,17 +16,11 @@ local meta_hooks = {
         return index(self, prop)
     end,
     ['__newindex'] = function(self, prop, value)
-        local A = emulated[self] or nil
-        local B = A and A[prop] or nil
+        local A = emulated[self]
+        local B = A and A[prop]
 
         if A and B then
-            local caller = checkcaller()
-            if not caller then
-                B[1] = value
-            else
-                B[2] = value
-            end
-
+            B[checkcaller() and 2 or 1] = value
             value = B[2]
         end
 
